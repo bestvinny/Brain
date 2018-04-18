@@ -1,0 +1,9 @@
+{
+    "name": "pesapal",
+    "version": "1.0",
+    "display_name": "Pesapal",
+    "description": "Payment with Pesapal",
+    "author": "Wanekeya Sam",
+    "category": "payment",
+    "has_installer": true
+}

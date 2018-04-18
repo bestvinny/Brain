@@ -1,0 +1,9 @@
+{
+    "name": "paypal",
+    "version": "1.0",
+    "display_name": "Paypal",
+    "description": "Payment with Paypal",
+    "author": "Wanekeya Sam",
+    "category": "payment",
+    "has_installer": true
+}

@@ -1,0 +1,13 @@
+{
+  "name": "jobclass/laravel-text-to-image",
+  "description": "Convert your formatted texts in any very pretty pictures.",
+  "license": "MIT",
+  "authors": [
+	{
+	  "name": "Wanekeya Sam",
+	  "email": "devroot@wanekeyasam.co.ke"
+	}
+  ],
+  "minimum-stability": "stable",
+  "require": {}
+}
