@@ -62,7 +62,7 @@ class LoginController extends FrontController
     public function commonQueries()
     {
         $this->loginPath = $this->lang->get('abbr') . '/' . trans('routes.login');
-        $this->redirectTo = $this->lang->get('abbr') . '/account';
+        $this->redirectTo = $this->lang->get('abbr') . '/profile';
         $this->redirectAfterLogout = $this->lang->get('abbr') . '/' . trans('routes.login');
     }
 
@@ -79,7 +79,7 @@ class LoginController extends FrontController
     {
         // Remembering Login
         if (Auth::viaRemember()) {
-            return redirect()->intended($this->lang->get('abbr') . '/account');
+            return redirect()->intended($this->lang->get('abbr') . '/profile');
         }
 
         // Meta Tags

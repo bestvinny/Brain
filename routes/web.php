@@ -131,6 +131,7 @@ Route::group([
         // HOMEPAGE
         Route::group(['middleware' => 'httpCache:yes'], function($router) {
             Route::get('/', 'HomeController@index');
+            Route::get('candidates', 'HomeController@candidates');
             Route::get(LaravelLocalization::transRoute('routes.countries'), 'CountriesController@index');
         });
 
@@ -144,6 +145,8 @@ Route::group([
             // Registration Routes
             Route::get(LaravelLocalization::transRoute('routes.signup'), ['as' => 'register', 'uses' => 'Auth\RegisterController@showRegistrationForm']);
             Route::post('signup/submit', ['as' => 'register.post', 'uses' => 'Auth\RegisterController@register']);
+            Route::get('registerCompany', 'Auth\RegisterController@showCompRegForm');
+            Route::post('signupcomp/submit', ['as' => 'registerComp.post', 'uses' => 'Auth\RegisterController@registerComp']);
             Route::get('signup/success', 'Auth\RegisterController@success');
 
             // Login Routes
@@ -167,6 +170,9 @@ Route::group([
         // ADS
         $router->pattern('id', '[0-9]+');
         Route::get(LaravelLocalization::transRoute('routes.create'), 'Ad\PostController@getForm');
+
+        Route::get('create/candidates', 'Ad\PostController@candidates');
+
         Route::post('create/submit', 'Ad\PostController@postForm');
         Route::get('create/success', 'Ad\PostController@success');
         Route::get('create/success-payment', 'Ad\PostController@getSuccessPayment');
@@ -191,12 +197,56 @@ Route::group([
             $router->pattern('id', '[0-9]+');
 
             Route::get('account', 'HomeController@index');
+
+            //Jobseeker and student routes
+            Route::get('profile', 'HomeController@profile');
+            Route::get('profile/addForm', 'HomeController@addProfForm');
+            Route::post('profile/details', 'HomeController@addProfile');
+            Route::get('profile/editForm/{id}', 'HomeController@editForm');
+            Route::put('profile/update/{id}', 'HomeController@editProfile');
+
+            Route::get('profile/addeduform', 'HomeController@addEduForm');
+            Route::post('profile/insertedu', 'HomeController@addEducation');
+            Route::get('profile/editedu/{id}', 'HomeController@editEduForm');
+            Route::put('profile/updateedu/{id}', 'HomeController@editEducation');
+
+            Route::get('profile/addexpform', 'HomeController@addExpForm');
+            Route::post('profile/insertexp', 'HomeController@addExperience');
+            Route::get('profile/editexp/{id}', 'HomeController@editExpForm');
+            Route::put('profile/updateexp/{id}', 'HomeController@editExperience');
+
+            Route::get('profile/addPortform', 'HomeController@addPortform');
+            Route::post('profile/insertport', 'HomeController@addPortfolio');
+            Route::get('profile/editport/{id}', 'HomeController@editPortForm');
+            Route::put('profile/updateport/{id}', 'HomeController@editPortfolio');
+
+            Route::get('profile/addCompform', 'HomeController@addCompform');
+            Route::post('profile/insertcomp', 'HomeController@addCompInfo');
+            Route::get('profile/editcomp/{id}', 'HomeController@editCompForm');
+            Route::put('profile/updatecomp/{id}', 'HomeController@editCompany');
+
+
+            //Company profile routes
+            Route::get('company/profile', 'HomeController@info');
+            Route::post('company/profile/add', 'HomeController@addinfo');
+
             Route::post('account/details', 'EditController@details');
             Route::put('account/resume/update', 'EditController@resume');
             Route::put('account/settings/update', 'EditController@settings');
             Route::post('account/preferences', 'EditController@preferences');
+            Route::post('account/education', 'EditController@education');
+            Route::post('account/experience', 'EditController@experience');
+            Route::post('account/portfolio', 'EditController@portfolio');
+            Route::post('account/skills', 'EditController@skills');
 
             Route::get('account/home', 'HomeController@index');
+
+            Route::get('account/candidates', 'HomeController@candidates');
+            Route::get('account/candidate/{id}', 'HomeController@viewcandidate');
+            Route::get('account/companies', 'HomeController@companies');
+            Route::get('account/companies/search', 'HomeController@searchCompany');
+            Route::get('account/company/{id}', 'HomeController@viewcompany');
+
             Route::get('account/saved-search', 'AdsController@getSavedSearch');
 
             $router->pattern('pagePath', '(myads|archived|favourite|pending-approval|saved-search)+');

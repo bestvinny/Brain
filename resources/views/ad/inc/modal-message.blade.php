@@ -24,7 +24,7 @@
 					@endif
 
 					@if (Auth::check())
-						<input type="hidden" name="sender_name" value="{{ $user->name }}">
+						<input type="hidden" name="sender_name" value="{{ $user->first_name }} {{ $user->surname }}">
 						<input type="hidden" name="sender_email" value="{{ $user->email }}">
 						<input type="hidden" name="sender_phone" value="{{ $user->phone }}">
 					@else

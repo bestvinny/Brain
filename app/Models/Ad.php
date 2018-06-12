@@ -263,6 +263,11 @@ class Ad extends BaseModel
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+    public function company()
+    {
+        return $this->belongsTo('App\Models\Company');
+    }
+
     public function adType()
     {
         return $this->belongsTo('App\Models\AdType', 'ad_type_id');

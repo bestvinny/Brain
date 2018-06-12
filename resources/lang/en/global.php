@@ -164,6 +164,30 @@ return [
     'Create your Favorite jobs list, and save your searchs. Don\'t forget any opportunity!' => 'Create your Favorite  jobs list. And save your search. Don\'t forget any opportunity.',
 	'Do you have a post to be filled within your company? Find the right candidate in a few clicks at :app_name' => 'Do you have a post to be filled within your company? Find the right candidate in a few clicks at :app_name.',
     
+    
+     // Candidates sidebar
+    'All Locations' => 'All Locations',
+    'Experience' => 'Experience',
+    'Skills' => 'Skills',
+    'Occupation' => 'Occupation',
+    'Education' => 'Education',
+    'Portfolio' => 'Portfolio',
+    'Name of Company' => 'Name of Company',
+    'Role at Workplace' => 'Role at Workplace',
+    'Highest Level Of Education' => 'Highest Level Of Education',
+    'Name of Institution' => 'Name of Institution',
+    'Course Studied' => 'Course Studied',
+    'Qualification' => 'Qualification',
+    'Certification' => 'Certification',
+    'Description' => 'Description',
+    'Link' => 'Link',
+    'Upload a File' => 'Upload a File',
+    'Add Skills' => 'Add Skills',
+    
+
+     // Candidates sidebar
+    'Companies' => 'Companies',
+
     // Post Ads
     'Post a Job' => 'Post a Job',
     'Category' => 'Category',
@@ -369,6 +393,7 @@ return [
     'Contact Employer' => 'Contact Employer',
     'Contact advertiser' => 'Contact advertiser',
     'Name' => 'Name',
+    'Candidates' => 'Candidates',
     'Your name' => 'Your name',
     'E-mail' => 'E-mail',
     'i.e. you@gmail.com' => 'i.e. you@gmail.com',

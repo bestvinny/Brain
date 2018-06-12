@@ -46,7 +46,7 @@
 
 				<div class="col-md-8 page-content">
 					<div class="inner-box category-content">
-						<h2 class="title-2"><strong> <i class="icon-user-add"></i> {{ t('Create your account, Its free') }}</strong></h2>
+						<h2 class="title-2" id="acc"><strong> <i class="icon-user-add"></i> {{ t('Create your account, Its free') }}</strong></h2>
 						<div class="row">
 							@if (config('settings.activation_social_login'))
 								<div class="text-center" style="margin-bottom: 30px;">
@@ -67,8 +67,16 @@
 									</div>
 								</div>
 							@endif
+									
+
 							<div class="col-sm-12">
-								<form id="signup_form" class="form-horizontal" method="POST" action="{{ lurl('signup/submit') }}" enctype="multipart/form-data">
+								
+								
+								<div id="seekers">
+									<div id="seekerinfo" class="content-subheading"><i class="icon-user fa"></i> <strong>Job seeker information</strong></div>
+									<div id="highinfo" class="content-subheading"><i class="icon-user fa"></i> <strong>High school information</strong></div>
+									
+									<form id="signup_form" class="form-horizontal" method="POST" action="{{ lurl('signup/submit') }}" enctype="multipart/form-data">
 									{!! csrf_field() !!}
 									<fieldset>
 										<?php
@@ -91,7 +99,23 @@
 										*/
 										?>
 
-										<!-- Name -->
+										<!-- User Type -->
+										<div class="form-group required <?php echo (isset($errors) and $errors->has('user_type')) ? 'has-error' : ''; ?>">
+											<label class="col-md-4 control-label">{{ t('You are a') }} <sup>*</sup></label>
+											<div class="col-md-6">
+												@foreach ($userTypes as $type)
+													<label class="radio-inline" for="user_type-{{ $type->id }}">
+														<input type="radio" name="user_type" id="user_type-{{ $type->id }}" class="user_type"
+															   value="{{ $type->id }}" {{ (old('user_type', \Illuminate\Support\Facades\Input::get('type'))==$type->id) ? 'checked="checked"' : '' }}>
+														{{ t('' . $type->name) }}
+													</label>
+												@endforeach
+											</div>
+										</div>
+
+										<div id="ss">
+
+											<!-- Name -->
 										<div class="form-group required <?php echo (isset($errors) and $errors->has('first_name')) ? 'has-error' : ''; ?>">
 											<label class="col-md-4 control-label">{{ t('First Name') }} <sup>*</sup></label>
 											<div class="col-md-6">
@@ -105,20 +129,6 @@
 											<div class="col-md-6">
 												<input name="surname" placeholder="{{ t('Surname') }}" class="form-control input-md" type="text"
 													   value="{{ old('surname') }}">
-											</div>
-										</div>
-
-										<!-- User Type -->
-										<div class="form-group required <?php echo (isset($errors) and $errors->has('user_type')) ? 'has-error' : ''; ?>">
-											<label class="col-md-4 control-label">{{ t('You are a') }} <sup>*</sup></label>
-											<div class="col-md-6">
-												@foreach ($userTypes as $type)
-													<label class="radio-inline" for="user_type-{{ $type->id }}">
-														<input type="radio" name="user_type" id="user_type-{{ $type->id }}" class="user_type"
-															   value="{{ $type->id }}" {{ (old('user_type', \Illuminate\Support\Facades\Input::get('type'))==$type->id) ? 'checked="checked"' : '' }}>
-														{{ t('' . $type->name) }}
-													</label>
-												@endforeach
 											</div>
 										</div>
 
@@ -291,9 +301,12 @@
 												<div style="clear:both"></div>
 											</div>
 										</div>
+											
+										</div>
+
 
 										<!-- Button  -->
-										<div class="form-group">
+										<div class="form-group" id="btn">
 											<label class="col-md-4 control-label"></label>
 											<div class="col-md-8">
 												<button id="signup_btn" class="btn btn-primary btn-lg"> {{ t('Register') }} </button>
@@ -304,6 +317,10 @@
 
 									</fieldset>
 								</form>
+
+								</div>
+
+
 							</div>
 						</div>
 					</div>

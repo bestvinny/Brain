@@ -259,6 +259,10 @@
 								</div>
 							</div>
 
+
+
+							<!--Settings -->
+
 							<div class="panel panel-default">
 								<div class="panel-heading">
 									<h4 class="panel-title"><a href="#collapseB2" data-toggle="collapse"> {{ t('Settings') }} </a></h4>
@@ -318,6 +322,8 @@
 		<!--/.container-->
 	</div>
 	<!-- /.main-container -->
+
+
 @endsection
 
 @section('after_scripts')
@@ -356,6 +362,23 @@
 			$('#country').change(function () {
 				setCountryPhoneCode($(this).val(), countries);
 			});
+
+
+			// Add skill tags
+			$('#skill_tags').tokenfield({
+				autocomplete:{
+					source:['HTML','CSS','PHP','javascript','Mysql','Laravel'],
+					delay:100
+				},
+				showAutocompleteOnFocus: true
+			});
+
+			
+
 		});
+
+
 	</script>
+
+	s
 @endsection

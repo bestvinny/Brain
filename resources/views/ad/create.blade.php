@@ -253,7 +253,7 @@
 										</div>
 
 										@if (Auth::check())
-											<input id="contact_name" name="contact_name" type="hidden" value="{{ $user->name }}">
+											<input id="contact_name" name="contact_name" type="hidden" value="{{ $user->first_name }}">
 										@else
 											<div class="form-group required <?php echo ($errors->has('contact_name')) ? 'has-error' : ''; ?>">
 												<label class="col-md-3 control-label" for="contact_name">{{ t('Contact Name') }} <sup>*</sup></label>

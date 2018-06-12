@@ -57,8 +57,9 @@ class Education extends BaseModel
      *
      * @var array
      */
-    protected $fillable = ['name', 'translation_lang', 'translation_of'];
-    public $translatable = ['name'];
+    protected $fillable = ['user_id', 'education_level', 'institution','course','qualification','certification'];
+    
+    //public $translatable = ['name'];
     
     /**
      * The attributes that should be hidden for arrays
@@ -95,6 +96,16 @@ class Education extends BaseModel
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User', 'user_id');
+    }
+
+     public function occupation()
+    {
+        return $this->belongsTo('App\Models\Occupation', 'occupation_id');
+    }
     
     /*
     |--------------------------------------------------------------------------

@@ -105,6 +105,71 @@ class HomeController extends FrontController
         return view('home.index', $data);
     }
 
+    //Employer candidate search page
+    public function candidates()
+    {
+        $data = array();
+        
+         //Get all users
+        $data['users'] = User::all();
+
+		// Companies
+		$data['featuredCompanies'] = $this->getFeaturedCompanies();
+
+		// Featured Ads
+		$data['latestAds'] = $this->getLatestAds();
+        
+        // Get Categories
+        $data['categories'] = $this->getCategories();
+
+        // Get Cities
+        $data['cities'] = $this->getLocations();
+        
+        
+        // Get Bottom Infos
+        if (config('settings.activation_home_stats'))
+        {
+			// Count ads
+			$data['count_ads'] = Ad::where('country_code', $this->country->get('code'))->count();
+			$data['count_cities'] = $this->countLocations();
+            // Count users
+            $data['count_users'] = User::where('active', 1)->count();
+            // Count Facebook fans
+            $data['count_facebook_fans'] = countFacebookFans(config('settings.facebook_page_id'));
+        }
+        
+        
+        // Modal - States Collection
+        $states = SubAdmin1::where('code', 'LIKE', $this->country->get('code') . '.%')->orderBy('name')->get(['code', 'name'])->keyBy('code');
+        view()->share('states', $states);
+
+
+        // SEO /===============================================================================
+        if (config('settings.app_slogan')) {
+            $title = config('settings.app_slogan');
+        } else {
+            $title = t('Jobs ads in :location', ['location' => $this->country->get('name')]);
+        }
+        if (config('settings.meta_description')) {
+            $description = config ('settings.meta_description');
+        } else {
+            $description = t('Search thousands of jobs in Kenya; get the inside scoop on companies(employeers), employees with reviews, and more. Hiring? Post a job for free.');
+        }
+
+        // Meta Tags
+        MetaTag::set('title', $title);
+        MetaTag::set('description', strip_tags($description));
+        
+        // Open Graph
+        $this->og->title($title)->description($description);
+        view()->share('og', $this->og);
+        
+        return view('home.candidates', $data);
+    }
+
+        
+
+
     private function getCategories()
 	{
 		$cats = Category::where('parent_id', 0)->where('translation_lang', $this->lang->get('abbr'))->orderBy('lft')->get();

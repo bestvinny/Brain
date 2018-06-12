@@ -183,6 +183,15 @@ class User extends BaseUser
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+    public function education()
+    {
+         return $this->hasMany('App\Models\Education');
+    }
+    public function occupation()
+    {
+         return $this->hasOne('App\Models\Occupation');
+    }
+
     public function ads()
     {
         return $this->hasMany('App\Models\Ad', 'user_id');

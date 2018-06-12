@@ -18,6 +18,7 @@
 namespace App\Http\Controllers\Account;
 
 use App\Models\Resume;
+use App\Models\Skill;
 use App\Models\User;
 use App\Http\Controllers\FrontController;
 use Illuminate\Http\Request;
@@ -131,4 +132,100 @@ class EditController extends AccountBaseController
 
         return view('account.home', $data);
     }
+
+
+    public function education(Request $request)
+    {
+        $this->validate($request,[
+            'education_level' => 'Required',
+            'institution' => 'Required',
+            'course' => 'Required',
+            'qualification' => 'Required'
+        ]);
+
+         // Ad data
+        $educationInfo = [
+            'education_level'     => $request->input('education_level'),
+            'institution'         => $request->input('institution'),
+            'course'              => $request->input('course'),
+            'qualification'       => $request->input('qualification'),
+        ];
+
+        // Save Ad to database
+        $education = new Education($educationInfo);
+        $education->save();
+
+        flash()->success(t("Your Education has been added successfully."));
+
+        return redirect($this->lang->get('abbr') . '/account');
+    }
+
+    public function experience(Request $request)
+    {
+        $this->validate($request,[
+            'company_name' => 'Required',
+            'role' => 'Required',
+            'description' => 'Required',
+        ]);
+
+         // Ad data
+        $experienceInfo = [
+            'company_name'     => $request->input('company_name'),
+            'role'             => $request->input('role'),
+            'description'      => $request->input('description'),
+        ];
+
+        // Save Ad to database
+        $experience = new Experience($experienceInfo);
+        $experience->save();
+
+        flash()->success(t("Your Experience has been added successfully."));
+
+        return redirect($this->lang->get('abbr') . '/account');
+    }
+
+    public function portfolio(Request $request)
+    {
+        $this->validate($request,[
+            'portfolio_name' => 'Required',
+            'description' => 'Required',
+        ]);
+
+         // Ad data
+        $portfolioInfo = [
+            'portfolio_name'             => $request->input('portfolio_name'),
+            'description'      => $request->input('description'),
+            'link'             => $request->input('role'),
+            'files'            => $request->input('files'),
+        ];
+
+        // Save Ad to database
+        $portfolio = new Experience($portfolioInfo);
+        $portfolio->save();
+
+        flash()->success(t("Your Portfolio has been added successfully."));
+
+        return redirect($this->lang->get('abbr') . '/account');
+    }
+
+    public function skills(Request $request)
+    {
+        $this->validate($request,[
+            'skill_tags' => 'Required',
+        ]);
+
+         // Ad data
+        $skillsInfo = [
+            'portfolio_name'   => $request->input('portfolio_name'),
+        ];
+            
+        // Save Ad to database
+        $skills = new Skill($skillsInfo);
+        $skills->save();
+
+        flash()->success(t("Your Skills has been added successfully."));
+
+        return redirect($this->lang->get('abbr') . '/account');
+    }
+
 }

@@ -6,7 +6,7 @@
 							class="sr-only">{{ t('Close') }}</span></button>
 				<h4 class="modal-title"><i class="fa icon-info-circled-alt"></i> {{ t('There\'s something wrong with this  ads?') }} </h4>
 			</div>
-			<form role="form" method="POST" action="{{ lurl($ad->id . '/report') }}">
+			<form role="form" method="POST" action="">
 				{!! csrf_field() !!}
 				<div class="modal-body">
 

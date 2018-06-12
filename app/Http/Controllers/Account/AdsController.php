@@ -75,6 +75,8 @@ class AdsController extends AccountBaseController
     /**
      * @return View
      */
+
+
     public function getMyAds()
     {
         $data = [];
@@ -139,6 +141,7 @@ class AdsController extends AccountBaseController
 
         return view('account.ads', $data);
     }
+
 
     /**
      * @return View

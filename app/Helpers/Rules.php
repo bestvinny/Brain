@@ -133,6 +133,19 @@ class Rules
         return $rules;
     }
 
+     public static function Profile(Request $request)
+    {
+        $rules = [
+            //'gender'              => 'required|not_in:0',
+            //'name'                    => 'required|mb_between:3,200',
+            'title'            => 'required',
+            'about'            => 'required',
+        ];
+
+        
+        return $rules;
+    }
+
 	/**
 	 * @param Request $request
 	 * @return array

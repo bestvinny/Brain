@@ -20,6 +20,7 @@ namespace App\Http\Controllers\Ad;
 use App\Helpers\Ip;
 use App\Helpers\Rules;
 use App\Models\Ad;
+use App\Models\Company;
 use App\Models\AdType;
 use App\Models\Category;
 use App\Models\Package;
@@ -130,6 +131,7 @@ class PostController extends FrontController
      */
     public function getForm()
     {
+
         // Only Admin users and Employers/Companies can post ads
         if (Auth::check()) {
             if (!in_array($this->user->user_type_id, [1, 2])) {
@@ -143,6 +145,7 @@ class PostController extends FrontController
 
         return view('ad.create');
     }
+
 
     /**
      * Store a new ad post.
@@ -212,10 +215,26 @@ class PostController extends FrontController
         $ad = new Ad($adInfo);
         $ad->save();
 
+
+
+         // Ad Company info data
+        $companyInfo = [
+            'company_name'        => $request->input('company_name'),
+            'company_description' => $request->input('company_description'),
+            'company_website'     => $request->input('company_website'),
+        ];
+
+        // Save Company to database
+        $company = new Company($companyInfo);
+        $company->save();
+
         // Save resume
         if ($request->hasFile('logo')) {
             $ad->logo = $request->file('logo');
             $ad->save();
+
+            $company->logo = $request->file('logo');
+            $company->save();
         }
 
 

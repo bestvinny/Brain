@@ -343,25 +343,36 @@ function setUserType(user_type)
 {
 	if (typeof user_type == "undefined") return false;
 
-	if ((user_type == 3) || (user_type == 4) )
-		$('#resumeBloc').show();
+	if ((user_type == 2) ||(user_type == 3) || (user_type == 4) )
+		$('#acc').hide();
 	else
-		$('#resumeBloc').hide();
+		$('#acc').show();
+		
+
+	if ((user_type == 3))
+		$('#seeker').show();
+	else
+		$('#seeker').hide();
 
 	if (user_type == 4)
 		$('#parentBloc').show();
 	else
 		$('#parentBloc').hide();
 
-	if (user_type == 3)
-		$('#seeker').show();
-	else
-		$('#seeker').hide();
-
 	if (user_type == 4)
 		$('#stude').show();
 	else
 		$('#stude').hide();
+
+	if (user_type == 3)
+		$('#seekerinfo').show();
+	else
+		$('#seekerinfo').hide();
+
+	if (user_type == 4)
+		$('#highinfo').show();
+	else
+		$('#highinfo').hide();
 
 }
 

@@ -45,7 +45,18 @@ $defaultLang = \App\Models\Language::where('default', 1)->first();
 					<li><a href="{{ lurl('/' .  trans('routes.t-search')) }}"><i class="fa fa-search-plus"></i> {{ t('Browse Jobs') }}</a></li>
 					@if (!auth()->user())
 						<li><a href="{{ lurl(trans('routes.signup')) . '?type=3' }}"><i class="icon-doc-4"></i> {{ t('Add Resume') }}</a></li>
+						<li><a href="{{ lurl('registerCompany') }}"><i class="icon-doc-4"></i> {{ t('Employers') }}</a></li>
 					@endif
+
+					@if (auth()->user() && in_array($user->user_type_id, [1, 2]))
+						<li><a href="{{ lurl('account/candidates') }}"><i class="fa fa-users"></i> {{ t('Candidates') }}</a></li>
+					@endif
+
+					@if (auth()->user() && in_array($user->user_type_id, [1, 3, 4]))
+						<li><a href="{{ lurl('account/companies') }}"><i class="fa fa-users"></i> {{ t('Companies') }}</a></li>
+					@endif
+					
+				
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">
@@ -61,12 +72,16 @@ $defaultLang = \App\Models\Language::where('default', 1)->first();
 							<li><a href="{{ lurl(trans('routes.logout')) }}">{{ t('Signout') }} <i class="glyphicon glyphicon-off"></i> </a></li>
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-									<span>{{ $user->name }}</span>
+									<span>{{ $user->first_name }}</span>
 									<i class="icon-user fa"></i>
 									<i class=" icon-down-open-big fa"></i>
 								</a>
 								<ul class="dropdown-menu user-menu">
 									<li class="active"><a href="{{ lurl('account') }}"><i class="icon-home"></i> {{ t('Personal Home') }}</a></li>
+									@if (in_array($user->user_type_id, [1, 2, 3, 4]))
+									<li class="active"><a href="{{ lurl('/profile') }}"><i class="icon-star"></i> {{ t('Profile') }}</a></li>
+									@endif
+									
                                     @if (in_array($user->user_type_id, [1, 2]))
 									    <li><a href="{{ lurl('account/myads') }}"><i class="icon-th-thumb"></i> {{ t('My ads') }} </a></li>
                                         <li><a href="{{ lurl('account/pending-approval') }}"><i class="icon-hourglass"></i> {{ t('Pending approval') }} </a></li>

@@ -832,7 +832,6 @@ body {
 	max-width: 800px;
 	margin-left: auto;
 	margin-right: auto;
-	margin-top: 30px;
 	background: rgba(0, 0, 0, 0.3);
 	padding: 10px;
 	border-radius: 4px;
@@ -4401,6 +4400,14 @@ nav.slider-nav a.next {
 
 .navbar-left {
 	margin-top: 20px;
+}
+
+.jobs-intros {
+	height: 120px;
+}
+
+.jobs-intross {
+	height: 120px;
 }
 
 .jobs-intro {

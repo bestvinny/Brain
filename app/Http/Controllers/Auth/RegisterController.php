@@ -33,8 +33,9 @@ use App\Models\Ad;
 use App\Models\Gender;
 use App\Models\UserType;
 use App\Models\User;
+use App\Models\Company;
 use App\Models\ParentGuardian;
-use App\Models\Education;
+use App\Models\EducationLevel;
 use App\Http\Controllers\FrontController;
 use Illuminate\Http\Request;
 use Torann\LaravelMetaTags\Facades\MetaTag;
@@ -116,8 +117,8 @@ class RegisterController extends FrontController
         // References
         $data['countries'] = CountryLocalizationHelper::transAll(CountryLocalization::getCountries(), $this->lang->get('abbr'));
         $data['genders'] = Gender::where('translation_lang', $this->lang->get('abbr'))->get();
-        $data['userTypes'] = UserType::all();
-        $data['levels'] = Education::all();
+        $data['userTypes'] = UserType::where('id','>',2)->get();
+        $data['levels'] = EducationLevel::all();
 
         // Meta Tags
         MetaTag::set('title', t('Sign Up'));
@@ -134,11 +135,57 @@ class RegisterController extends FrontController
      */
     public function register(Request $request)
     {
-        // Form validation
+
+
+         // Add Company Info
+        if ($request->input('user_type') == 2) {
+                     $this->validate($request,[
+                    'contact_name' => 'Required',
+                    'company_name' => 'Required',
+                    'company_description' => 'Required',
+                    'contact_email' => 'Required',
+                    'contact_phone' => 'Required',
+                    'location' => 'Required',
+                    'pass' => 'required|between:5,15|confirmed'
+
+
+                ]);
+                // Save Parent's info
+                $companyInfo = [
+                    //'user_id'                 => $user->id,
+                    'contact_name'            => $request->input('contact_name'),
+                    'company_name'            => $request->input('company_name'),
+                    'company_description'     => $request->input('company_description'),
+                    'company_website'         => $request->input('company_website'),
+                    'company_email'           => $request->input('contact_email'),
+                    'contact_phone'           => $request->input('contact_phone'),
+                    'location'                => $request->input('location'),
+                ];
+                $company = new Company($companyInfo);
+                //dd($company);
+                $company->save();
+
+                 $userCompInfo = [
+                     'country_code'     => $this->country->get('code'),
+                     'user_type_id'     => $request->input('user_type'),
+                     'firstname'        => $request->input('contact_name'),
+                     'email'            => $request->input('contact_email'),
+                     'password'         => bcrypt($request->input('pass')),
+                ];
+                $userComp = new User($userCompInfo);
+                //dd($userComp);
+                $userComp->save();
+        }
+
+
+         if ($request->input('user_type') == 3 || $request->input('user_type') == 4 || $request->input('user_type') == null){
+             // Form validation
         $validator = Validator::make($request->all(), Rules::Signup($request));
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
+    }
+       
 
 
         // Store User
@@ -183,8 +230,10 @@ class RegisterController extends FrontController
             }
         }
 
+       
+
         // Add Parent/Guardian Info
-        if ($request->input('user_type') == 4) {
+        if ($request->input('user_type') == 2) {
                 // Save Parent's info
                 $parentInfo = [
                     'user_id'     => $user->id,
@@ -227,12 +276,119 @@ class RegisterController extends FrontController
         // Redirect new users to the user area if Users activation is not required
         if ((int)config('settings.require_users_activation') != 1) {
             if (Auth::loginUsingId($user->id)) {
-                return redirect()->intended($this->lang->get('abbr') . '/account');
+                return redirect()->intended($this->lang->get('abbr') . '/profile');
             }
         }
 
         return redirect($this->lang->get('abbr') . '/signup/success')->with(['success' => 1, 'message' => t($this->msg['signup']['success'])]);
     }
+
+    public function showCompRegForm()
+    {
+        $data = [];
+
+        // References
+        $data['countries'] = CountryLocalizationHelper::transAll(CountryLocalization::getCountries(), $this->lang->get('abbr'));
+        $data['genders'] = Gender::where('translation_lang', $this->lang->get('abbr'))->get();
+        $data['userTypes'] = UserType::all();
+        $data['levels'] = EducationLevel::all();
+
+        // Meta Tags
+        MetaTag::set('title', t('Sign Up'));
+        MetaTag::set('description', t('Sign Up on :app_name !', ['app_name' => mb_ucfirst(config('settings.app_name'))]));
+
+        return view('auth.signup.signup', $data);
+    }
+
+     public function registerComp(Request $request)
+    {
+
+       // Add Company Info
+                     $this->validate($request,[
+                    'contact_name' => 'Required',
+                    'company_name' => 'Required',
+                    'company_description' => 'Required',
+                    'contact_email' => 'Required',
+                    'contact_phone' => 'Required',
+                    'location' => 'Required',
+                    'pass' => 'required|between:5,15|confirmed'
+
+
+                ]);
+                // Save Parent's info
+                $companyInfo = [
+                    //'user_id'                 => $user->id,
+                    'contact_name'            => $request->input('contact_name'),
+                    'company_name'            => $request->input('company_name'),
+                    'company_description'     => $request->input('company_description'),
+                    'company_website'         => $request->input('company_website'),
+                    'company_email'           => $request->input('contact_email'),
+                    'contact_phone'           => $request->input('contact_phone'),
+                    'location'                => $request->input('location'),
+                ];
+
+                $company = new Company($companyInfo);
+                //dd($company);
+                $company->save();
+
+                 $userCompInfo = [
+                     // 'country_code'     => $this->country->get('code'),
+                     'user_type_id'     => 2,
+                     'first_name'        => $request->input('contact_name'),
+                     'email'            => $request->input('contact_email'),
+                     'password'         => bcrypt($request->input('pass')),
+                ];
+                 $userComp = new User($userCompInfo);
+                // dd($userComp);
+                 $userComp->save();
+      
+       
+
+
+
+       
+
+
+        // Update Ads created by this email
+        if (isset($userComp->id) and $userComp->id > 0) {
+            Ad::withoutGlobalScopes([ActiveScope::class, ReviewedScope::class])->where('contact_email', $request->input('email'))->update(['user_id' => $userComp->id]);
+        }
+
+        // Send Welcome Email
+        if (config('settings.require_users_activation') == 1) {
+            try {
+                Mail::send(new UserRegistered($userComp));
+            } catch (\Exception $e) {
+                flash()->error($e->getMessage());
+            }
+        }
+
+        // Send Admin Notification Email
+        if (config('settings.admin_email_notification') == 1) {
+            try {
+                // Get all admin users
+                $admins = User::where('is_admin', 1)->get();
+                if ($admins->count() > 0) {
+                    foreach ($admins as $admin) {
+                        Mail::send(new UserNotification($userComp, $admin));
+                    }
+                }
+            } catch (\Exception $e) {
+                flash()->error($e->getMessage());
+            }
+        }
+
+        // Redirect new users to the user area if Users activation is not required
+        if ((int)config('settings.require_users_activation') != 1) {
+            if (Auth::loginUsingId($userComp->id)) {
+                return redirect()->intended($this->lang->get('abbr') . '/profile');
+            }
+        }
+
+        return redirect($this->lang->get('abbr') . '/signup/success')->with(['success' => 1, 'message' => t($this->msg['signup']['success'])]);
+        }
+
+    
 
     /**
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|View
